@@ -3,7 +3,8 @@ FROM node:16
 
 # Actualiza e instala LibreOffice y otras dependencias necesarias
 RUN apt-get update && \
-    apt-get install -y libreoffice
+    apt-get install -y libreoffice && \
+    apt-get install -y libreoffice-common
 
 # Crear y establecer el directorio de trabajo
 WORKDIR /app
