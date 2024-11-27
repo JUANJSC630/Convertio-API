@@ -7,22 +7,26 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configuración de CORS para permitir solicitudes desde localhost:3001
+const uploadDir = "uploads";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log(`Directorio '${uploadDir}' creado.`);
+}
+
 app.use(
   cors({
-    origin: "*", // Permite solicitudes desde esta URL
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   })
 );
 
-// Configuración de multer para manejar archivos subidos con su nombre original
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // El directorio donde se guardan los archivos
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Usa el nombre original del archivo
+    cb(null, file.originalname);
   },
 });
 
@@ -35,8 +39,6 @@ app.post("/convert", upload.single("file"), (req, res) => {
     return res.status(400).send("No file uploaded");
   }
 
-  console.log(file)
-
   const filePath = file.path;
   const outputPath = `${filePath}.pdf`;
 
@@ -44,8 +46,8 @@ app.post("/convert", upload.single("file"), (req, res) => {
 
   libre.convert(fileBuffer, ".pdf", undefined, (err, done) => {
     if (err) {
-      console.error(`Error to converting the file: ${err}`);
-      return res.status(500).send("Error to converting the file");
+      console.error(`Error converting the file: ${err}`);
+      return res.status(500).send("Error converting the file");
     }
 
     fs.writeFileSync(outputPath, done);
@@ -56,7 +58,7 @@ app.post("/convert", upload.single("file"), (req, res) => {
       fs.unlinkSync(filePath);
       fs.unlinkSync(outputPath);
       if (err) {
-        console.error(`Error to send the file: ${err}`);
+        console.error(`Error sending the file: ${err}`);
       }
     });
   });
