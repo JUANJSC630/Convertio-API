@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 const uploadDir = "uploads";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
-  console.log(`Directorio '${uploadDir}' creado.`);
+  console.log(`Directory ${uploadDir} created`);
 }
 
 app.use(
