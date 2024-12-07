@@ -1,38 +1,7 @@
-const express = require("express");
-const multer = require("multer");
 const fs = require("fs");
 const libre = require("libreoffice-convert");
-const cors = require("cors");
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-const uploadDir = "uploads";
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-  console.log(`Directory ${uploadDir} created`);
-}
-
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-app.post("/convert", upload.single("file"), (req, res) => {
+const convertFile = (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -62,8 +31,6 @@ app.post("/convert", upload.single("file"), (req, res) => {
       }
     });
   });
-});
+};
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+module.exports = { convertFile };
