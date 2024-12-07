@@ -8,7 +8,6 @@
 /.pnp
 .pnp.*
 .yarn/*
-yarn.lock
 !.yarn/cache
 !.yarn/patches
 !.yarn/plugins
