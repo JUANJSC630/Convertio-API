@@ -1,7 +1,7 @@
 const fs = require("fs");
 const libre = require("libreoffice-convert");
 
-const convertFile = (req, res) => {
+const wordToPdfFile = (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -33,4 +33,4 @@ const convertFile = (req, res) => {
   });
 };
 
-module.exports = { convertFile };
+module.exports = { wordToPdfFile };
