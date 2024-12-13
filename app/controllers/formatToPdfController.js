@@ -1,7 +1,7 @@
 const fs = require("fs");
 const libre = require("libreoffice-convert");
 
-const wordToPdfFile = (req, res) => {
+const formatToPdf = (req, res) => {
   const file = req.file;
 
   if (!file) {
@@ -15,8 +15,8 @@ const wordToPdfFile = (req, res) => {
 
   libre.convert(fileBuffer, ".pdf", undefined, (err, done) => {
     if (err) {
-      console.error(`Error converting the file: ${err}`);
-      return res.status(500).send("Error converting the file");
+      console.error(`Error converting to PDF: ${err}`);
+      return res.status(500).send("Error converting to PDF");
     }
 
     fs.writeFileSync(outputPath, done);
@@ -33,4 +33,4 @@ const wordToPdfFile = (req, res) => {
   });
 };
 
-module.exports = { wordToPdfFile };
+module.exports = { formatToPdf };

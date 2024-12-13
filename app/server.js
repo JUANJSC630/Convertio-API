@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
-const wordToPdf = require("./routes/word-to-pdf");
+const router = require("./routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,8 +14,7 @@ if (!fs.existsSync(uploadDir)) {
 
 app.use(cors({ origin: "*", methods: ["GET", "POST"] }));
 
-// Use routes
-app.use("/api/word-to-pdf", wordToPdf);
+app.use("/api", router);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
