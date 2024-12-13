@@ -1,9 +1,9 @@
 const express = require("express");
-const { wordToPdfFile } = require("../controllers/wordToPdfController");
+const { formatToPdf } = require("../controllers/formatToPdfController");
 const upload = require("../middlewares/uploadMiddleware");
 
 const router = express.Router();
 
-router.post("/", upload.single("file"), wordToPdfFile);
+router.post("/", upload.single("file"), formatToPdf);
 
 module.exports = router;
